@@ -1,69 +1,112 @@
+function getPlots(id) {
+  //Read samples.json
+      d3.json("../data/samples.json").then (incomingData =>{
+          console.log(incomingData)
+          var ids = incomingData.samples[0].otu_ids;
+          console.log(ids)
+          var sampleValues =  incomingData.samples[0].sample_values.slice(0,10).reverse();
+          console.log(sampleValues)
+          var labels =  incomingData.samples[0].otu_labels.slice(0,10);
+          console.log (labels)
+      // get only top 10 otu ids for the plot OTU and reversing it. 
+          var OTU_top = ( incomingData.samples[0].otu_ids.slice(0, 10)).reverse();
+      // get the otu id's to the desired form for the plot
+          var OTU_id = OTU_top.map(d => "OTU " + d);
+          console.log(`OTU IDS: ${OTU_id}`)
+       // get the top 10 labels for the plot
+          var labels =  incomingData.samples[0].otu_labels.slice(0,10);
+          console.log(`OTU_labels: ${labels}`)
+          var trace = {
+            x: sampleValues,
+            y: OTU_id,
+            text: labels,
+            marker: {
+            color: 'blue'},
+            type:"bar",
+            orientation: "h",
+        };
+        // create data variable
+        var data = [trace];
+
+        // create layout variable to set plots layout
+        var layout = {
+            title: "Top 10 OTU",
+            yaxis:{
+                tickmode:"linear",
+            },
+            margin: {
+                l: 100,
+                r: 100,
+                t: 100,
+                b: 30
+            }
+        };
+
+        // create the bar plot
+    Plotly.newPlot("bar", data, layout);
+
+    var trace1 = {
+      x: incomingData.samples[0].otu_ids,
+      y: incomingData.samples[0].sample_values,
+      mode: "markers",
+      marker: {
+          size: incomingData.samples[0].sample_values,
+          color: incomingData.samples[0].otu_ids
+      },
+      text:  incomingData.samples[0].otu_labels
+
+  };
+
+  // set the layout for the bubble plot
+  var layout_2 = {
+      xaxis:{title: "OTU ID"},
+      height: 400,
+      width: 850,
+  };
+
+  // creating data variable 
+  var data1 = [trace1];
+
+// create the bubble plot
+Plotly.newPlot("bubble", data1, layout_2); 
+    
+    });
+}  
+
+getPlots()
+          
+
+// Use D3 to select the dropdown menu
+function dropDown(){
+  var selectOption = d3.select("#selDataset")
+
 //Use d3 to read samples.json
-d3.json("data/samples.json").then((data) => {
-    function updatePlotly() {
-        // Use D3 to select the dropdown menu
-        var selectTag = d3.select("#select");
-        // Assign the value of the dropdown menu option to a variable
-        var options = selectTag.selectAll('option').data(data)
-        options.enter()
-        .append('option')
-        .attr('value', function(d) {
-          return d.name;
-        })
-        .text(function(d) {
-          return d.text;
-        });
-    }
+  d3.json("../data/samples.json").then((incomingData) => {
+    console.log(incomingData);
+    var sampleNames = incomingData.names;
+    sampleNames.forEach((sample) => {
+      selectOption.append("option")
+        .text(sample)
+        .property("value", sample);
+      });
+    var firstSample = sampleNames[0];
+    // metaData(firstSample);
+    // createCharts(firstSample);
 });
+}
+
+dropDown()
+
+// function metaData(){
+// var metaPanel = d3.select("#sample-metadata");
+// metaPanel.html("");
+// d3.json("../data/samples.json").then((incomingData) => {
+//   console.log(incomingData)
+//   Object.entries(incomingData).forEach(([key, value]) => {
+//     metaPanel.append("h6").text(`${key}: ${value}`)})
+// })};
 
 
-  
-//   // Call updatePlotly() when a change takes place to the DOM
-//   d3.selectAll("body").on("change", updatePlotly);
-  
-//   // This function is called when a dropdown menu item is selected
-//   function updatePlotly() {
-//     // Use D3 to select the dropdown menu
-//     var dropdownMenu = d3.select("#selDataset");
-//     // Assign the value of the dropdown menu option to a variable
-//     var dataset = dropdownMenu.node().value;
-  
-//     var CHART = d3.selectAll("#plot").node();
-  
-//     // Initialize x and y arrays
-//     var x = [];
-//     var y = [];
-  
-//     switch(dataset) {
-//       case "dataset1":
-//         x = [1, 2, 3, 4, 5];
-//         y = [1, 2, 4, 8, 16];
-//         break;
-  
-//       case "dataset2":
-//         x = [10, 20, 30, 40, 50];
-//         y = [1, 10, 100, 1000, 10000];
-//         break;
-  
-//       case "dataset3":
-//         x = [100, 200, 300, 400, 500];
-//         y = [10, 100, 50, 10, 0];
-//         break;
-  
-//       default:
-//         x = [1, 2, 3, 4, 5];
-//         y = [1, 2, 3, 4, 5];
-//         break;
-//     }
-  
-  
-//     // Note the extra brackets around 'x' and 'y'
-//     Plotly.restyle(CHART, "x", [x]);
-//     Plotly.restyle(CHART, "y", [y]);
-//   }
-  
-//   init();
-  
 // //Create a horizontal bar chart with drop-down menu to display the top 10 OTUs found in that individual.
 // ///Use sample_values as the values for the bar chart.
 // ///Use otu_ids as the labels for the bar chart.
@@ -71,7 +114,7 @@ d3.json("data/samples.json").then((data) => {
 // var trace1 = {
 //     x: data.map(row => row.samples),
 //     y: data.map(row => row.sample_values),
-//     text: data.map(row => row.otu_ids),
+//     text: jasonjasonjsonjjsondata.map(row => row.otu_ids),
 //     name: "Bar",
 //     type: "bar",
 //     orientation: "h"
