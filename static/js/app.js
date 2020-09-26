@@ -74,7 +74,7 @@ Plotly.newPlot("bubble", data1, layout_2);
 }  
 
 getPlots()
-          
+
 
 // Use D3 to select the dropdown menu
 function dropDown(){
@@ -97,39 +97,35 @@ function dropDown(){
 
 dropDown()
 
-// function metaData(){
-// var metaPanel = d3.select("#sample-metadata");
-// metaPanel.html("");
-// d3.json("../data/samples.json").then((incomingData) => {
-//   console.log(incomingData)
-//   Object.entries(incomingData).forEach(([key, value]) => {
-//     metaPanel.append("h6").text(`${key}: ${value}`)})
-// })};
+  function filteredData(incomingData, inputValue) {
+    return incomingData.metadata.id = 940;
+}
 
 
-// //Create a horizontal bar chart with drop-down menu to display the top 10 OTUs found in that individual.
-// ///Use sample_values as the values for the bar chart.
-// ///Use otu_ids as the labels for the bar chart.
-// ///Use otu_labels as the hovertext for the chart.
-// var trace1 = {
-//     x: data.map(row => row.samples),
-//     y: data.map(row => row.sample_values),
-//     text: jasonjasonjsonjjsondata.map(row => row.otu_ids),
-//     name: "Bar",
-//     type: "bar",
-//     orientation: "h"
-//   };
+function optionChanged(inputValue){
 
-
-// //Create a bubble chart that displays each sample.
-// ///Use otu_ids for the x values.
-// ///Use sample_values for the y values.
-// ///Use sample_values for the marker size.
-// ///Use otu_ids for the marker colors.
-// ///Use otu_labels for the text values.
-
-// //Display the sample metadata, i.e., an individual's demographic information.
-
-// //Display each key-value pair from the metadata JSON object somewhere on the page.
-
-// //Update all of the plots any time that a new sample is selected.
+  var metaDataTable = d3.select("#sample-metadata")
+  document.getElementById("sample-metadata").innerHTML = "";
+  d3.json("../data/samples.json").then((incomingData) => {
+    // var dataFilter = filteredData(incomingData,inputValue)
+    var metadataFilter = incomingData.metadata
+    var dataFilter = metadataFilter.filter(metadata => metadata.id == inputValue);
+    dataFilter.forEach((samples) => {
+    metaDataTable.append("p")
+    .text(`id: ${samples.id}`)
+    metaDataTable.append("p") 
+    .text(`ethnicity: ${samples.ethnicity}`)
+    metaDataTable.append("p") 
+    .text(`gender: ${samples.gender}`)
+    metaDataTable.append("p") 
+    .text(`age: ${samples.age}`)
+    metaDataTable.append("p") 
+    .text(`location: ${samples.location}`)
+    metaDataTable.append("p") 
+    .text(`bbtype: ${samples.bbtype}`)
+    metaDataTable.append("p") 
+    .text(`wfreq: ${samples.wfreq}`)
+    }
+    )
+  });
+}
