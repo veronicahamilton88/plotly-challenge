@@ -33,13 +33,18 @@ function getPlots(id) {
             title: "Top 10 OTU",
             yaxis:{
                 tickmode:"linear",
+                title: "OTU ID",
+            },
+            xaxis:{
+                title: "Values",
             },
             margin: {
                 l: 100,
                 r: 100,
                 t: 100,
-                b: 30
-            }
+                b: 100,
+            },
+
         };
 
         // create the bar plot
