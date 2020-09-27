@@ -1,6 +1,6 @@
 function getPlots(id) {
   //Read samples.json
-      d3.json("../../data/samples.json").then (incomingData =>{
+      d3.json("../data/samples.json").then (incomingData =>{
           console.log(incomingData)
           var ids = incomingData.samples[0].otu_ids;
           console.log(ids)
