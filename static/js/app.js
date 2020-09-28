@@ -1,6 +1,6 @@
 function getPlots(id) {
   //Read samples.json
-      d3.json("../data/samples.json").then (incomingData =>{
+      d3.json("data/samples.json").then (incomingData =>{
           console.log(incomingData)
           var ids = incomingData.samples[0].otu_ids;
           console.log(ids)
@@ -86,7 +86,7 @@ function dropDown(){
   var selectOption = d3.select("#selDataset")
 
 //Use d3 to read samples.json
-  d3.json("../../data/samples.json").then((incomingData) => {
+  d3.json("data/samples.json").then((incomingData) => {
     console.log(incomingData);
     var sampleNames = incomingData.names;
     sampleNames.forEach((sample) => {
@@ -111,7 +111,7 @@ function optionChanged(inputValue){
 
   var metaDataTable = d3.select("#sample-metadata")
   document.getElementById("sample-metadata").innerHTML = "";
-  d3.json("../../data/samples.json").then((incomingData) => {
+  d3.json("data/samples.json").then((incomingData) => {
     // var dataFilter = filteredData(incomingData,inputValue)
     var metadataFilter = incomingData.metadata
     var dataFilter = metadataFilter.filter(metadata => metadata.id == inputValue);
